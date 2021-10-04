@@ -15,25 +15,10 @@ use Symfony\Component\CssSelector\Node\FunctionNode;
 */
 // chamada do controller
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\testeController;
+
 
 // utilização do controller que deseja utilizar
 Route::get('/', [EventController::class, 'index']);
 Route::get('/events/create', [EventController::class, 'create']);
-
-Route::get("/contatos", function(){
-
-    // pega os dados dos parametros da url
-    $busca = request('search');
-
-   return view("contatos",['busca' => $busca]);
-});
-
-Route::get('/contato/{id?}', function($id = null){
-    return view("contato",['id'=> $id]);
-});
-
-Route::get("/admin", [testeController::class,'admin']);
-
-
-Route::get("/ferramentas", [testeController::class,'setup']);
+// envio de dados do evento: store
+Route::post('/events',[EventController::class, 'store']);
