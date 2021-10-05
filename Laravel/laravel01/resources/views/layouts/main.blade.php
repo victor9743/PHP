@@ -41,8 +41,21 @@
 
             </nav>
         </header>
+
+        <main>
+            <div class="container-fluid">
+                <div class="row">
+                    @if(session('msg'))
+                        <p class="msg">{{ session('msg') }}</p>
+                       
+                    @endif
+
+                    @yield('content')
+                </div>
+            </div>
+        </main>
         
-        @yield('content')
+        
        
 
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

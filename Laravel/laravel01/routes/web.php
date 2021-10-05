@@ -20,5 +20,6 @@ use App\Http\Controllers\EventController;
 // utilização do controller que deseja utilizar
 Route::get('/', [EventController::class, 'index']);
 Route::get('/events/create', [EventController::class, 'create']);
-// envio de dados do evento: store
+Route::get('/events/{id}', [EventController::class, 'mostrar']);
+// envio de dados ( POST ) do evento: store
 Route::post('/events',[EventController::class, 'store']);
