@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\User;
 
 class EventController extends Controller
 {
@@ -37,9 +38,20 @@ class EventController extends Controller
         // findOrFail faz uma busca
         $event = Event::findOrFail($id);
 
-        return view('events.mostrar',['event'=> $event]);
+        // procura o usuário a partir do ID e transforma em um array
+        $eventOwner = User::where('id', $event->user_id)->first()->toArray();
+
+        return view('events.mostrar',['event'=> $event, 'eventOwner'=> $eventOwner]);
 
 
+    }
+    public function dashboard(){
+
+        $user = auth()->user();
+
+        $events = $user->events;
+
+        return view('events.dashboard', ['events'=>$events]);
     }
 
     public function store(Request $request){
@@ -74,6 +86,9 @@ class EventController extends Controller
 
         }
 
+        $user = auth()->user();
+        $event->user_id = $user->id;
+
 
         // salvar dado no banco
         $event->save();
@@ -82,5 +97,12 @@ class EventController extends Controller
 
 
         
+    }
+
+    public function destroy($id){
+
+        Event::findOrFail($id)->delete();
+
+        return redirect('/dashboard')->with('msg', 'Evento removido com sucesso !!!');
     }
 }

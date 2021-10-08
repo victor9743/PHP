@@ -186,3 +186,17 @@ footer p{
 #items-lis{
     display: flex;
 }
+
+.dashboard-title-container{
+    margin-bottom: 30px;
+    margin-top: 30px;
+
+}
+
+.dashboard-title-container td{
+    width: 25%;
+}
+
+.dashboard-title-container form{
+    display: inline-block;
+}
