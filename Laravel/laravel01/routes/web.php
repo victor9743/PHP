@@ -24,7 +24,16 @@ Route::get('/events/{id}', [EventController::class, 'mostrar']);
 // envio de dados ( POST ) do evento: store
 Route::post('/events',[EventController::class, 'store']);
 
+Route::get('/events/edit/{id}', [EventController::class, 'edit'])->middleware('auth');
 
-Route::delete('/events/{id}',[EventController::class, 'destroy']);
+Route::put('/events/update/{id}',[EventController::class, 'update'])->middleware('auth');
 
+
+// rota delete
+Route::delete('/events/{id}',[EventController::class, 'destroy'])->middleware('auth');
+
+// criação de rota com middelware, para verificar se o usuário está autenticado
 Route::get('dashboard',[eventController::class,'dashboard'])->middleware(('auth'));
+
+Route::post('/events/join/{id}',[EventController::class,'joinEvent'])->middleware(('auth'));
+Route::delete('/events/leave/{id}',[EventController::class,'leaveEvent'])->middleware(('auth'));

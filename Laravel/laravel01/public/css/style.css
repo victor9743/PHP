@@ -197,6 +197,11 @@ footer p{
     width: 25%;
 }
 
-.dashboard-title-container form{
+.dashboard-events-container form{
     display: inline-block;
+}
+
+.img-preview{
+    width: 100px;
+    margin-top: 20px;
 }
