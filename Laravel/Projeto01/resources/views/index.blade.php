@@ -51,6 +51,7 @@
                     <th>Cidade</th>
                     <th>Estado</th>
                     <th>Escudo</th>
+                    <th>Opções</th>
                 </thead>
                
                     <tbody>
@@ -61,15 +62,24 @@
                             <td>{{$x ->clube_nome}}</td>
                             <td>{{$x ->clube_cidade}}</td>
                             <td>{{$x ->clube_estado}}</td>
+                            
                             <td> <img style="width: 50px; height:50px" src="/img/escudos/{{ $x->clube_escudo }}" alt="{{ $x ->nome }}" class="img-fluid"></td>
+                            <td><a href="/editar/{{ $x->id}}">Editar</a> | 
+                                <form action="/remover/{{ $x->id}}" method="POST">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit" class="btn btn-danger">
+                                        Remover
+                                    </button>   
+                                </form>
+                            </td>
+
                         </tr>
                         
                         @endforeach
                         
                     </tbody>
-              
-
-        
+               
     </table>
 
 

@@ -16,3 +16,5 @@ use App\Http\Controllers\clubController;
 
 Route::get('/', [clubController::class, 'index' ]);
 Route::post('/', [clubController::class, 'salvarDados']);
+Route::get('/editar/{id}',[clubController::class, 'mostrar']);
+Route::put('/update/{id}',[clubController::class, 'editar']);
