@@ -1,0 +1,272 @@
+-- Comandos Laravel --
+
+instalação composer
+para instalar o laravel, é necessário instalar o composer antes
+
+depois de instalar o composer:
+
+criar um projeto laravel
+composer create-project --prefer-dist laravel/laravel nomeDoProjeto
+
+startar servidor
+php artisan serve
+
+servidor iniciará na porta: localhost:8000
+
+views - dentro do diretório resources/views
+
+nas views no laravel, utiliza-se o template blade
+
+rotas - dentro dp diretório routes/web.php
+
+alguns comandos utilizados dentro do blade
+
+comentários em blade
+{{-- teste --}}
+
+saída de dados
+	{{ }}
+
+if/else
+
+	@if(lógica)
+	
+	@else
+
+	@endif
+
+for/foreach
+	
+	for
+	
+	@for($x = 0; $x< count($vetor); $x++)
+		<p>{{$vetor[$x}}</p>
+	@endfor
+
+	foreach
+
+	@foreach($vetor as $vet)
+		
+		// pegar o index o array(index)		
+
+		<p>{{ $vet }}</p>
+		
+	@endforeach
+
+obs: para utilizar o $vetor, ou qualquer outra variavel no blade,
+É preciso está informando-os no corpo da rota no arquivo web.php,
+ou no controller
+
+arquivos estáticos css, js e imagens
+
+os arquivos estáticos ficarão no diretório public.
+
+para acessar os arquivos estáticos dentro do blade.
+será necessário informar o diretório. Ex: ( href="/css/style.css")
+
+Layouts com blade
+
+
+esses comandos deverão ficar dentro do arquivo de layout
+
+<html>
+<head>
+	comando onde ficará o título do site( title )
+	@yield('title')
+</head>
+<body>
+	comando onde ficará conteúdo do site( body ). 
+	@yield('content')
+
+</body>
+</html>
+
+
+
+comandos que deverão ficar dentro da view
+
+@extends('layouts.main') -> diretorio + arquivo
+
+@section('title', 'Nome do titulo') -> título do site
+
+@section('content') -> conteúdo do site
+	
+	<h1>Conteúdo do Site</h1>
+	
+@endsection
+
+parametros nas rotas '{id}'
+
+Route::get('/{id}', function ($id) {
+
+    return view('index',['id'=>$id]);
+});
+
+parametros nas rotas "request('search')"
+
+Route::get('/', function(){
+	$busca = request('search');
+}
+
+
+Controllers
+
+php artisan make:controller nomedocontroller
+
+na arquivo rota deve-se:
+	importar o controller
+	use App\Http\Controllers\indexController;
+	
+	efetuar a chamada do controller
+	Route::get('/', [indexController::class, 'index']);
+
+no arquivo controler deve-se:
+	class indexController extends Controller
+	{
+    		//
+    		public function index(){
+        		return view('index');
+    		}
+	}
+
+
+
+Conexão com o banco de dados
+
+a configuração de conexão com o banco é feita com o arquivo .env
+
+
+testar comunincação com o banco
+php artisan migrate
+
+Migrations
+
+	criando uma migration
+	php artisan make:migration nome_da_migration
+
+	verificar status das migrations
+	php artisan make:status
+
+	fazer uma re-migração das tabelas
+	warning: esse comando pode apagar os dados existentes em uma tabela
+	php artisan make:fresh
+
+	adicionar um campo sem alterar os registros da tabela
+	php artisan make:migrate add_category_to_nomeDaTabela_table
+
+	desfaz a ultima rollback
+	php artisan migrate:rollback
+	
+	desfaz todas as migrations
+	php artisan make:reset
+
+
+Eloquent ORM do lavarel
+
+
+Models
+
+	criar um arquivo model
+	php artisan make:model nomeDoModel
+
+Adicionando um registro no banco
+
+	post
+	necessário criar uma rota tipo POST
+	Route::post('/', [EventController::class, 'nomeDoMetodo'])
+
+armazenamento de parametros
+	
+	dentro do controller
+	public function store(Request $request){
+		criação de uma nova instância do model
+		$event = new Model;
+	
+		atribuição das variaveis do request aos parametros do banco
+		$event->parametro1 = $request->parametro1;
+		$event->parametro2 = $request->parametro2;
+		$event->parametro3 = $request->parametro3;
+
+		salvar dados no banco;
+		$event->save();
+		
+		rediciona a rota
+		return redirect('index');
+
+		
+	}
+
+remover dados do banco
+
+	na view
+		   <form action="/remover/{{ $x->id}}" method="POST">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit" class="btn btn-danger">
+                                        Remover
+                                    </button>   
+                                </form>
+
+	na rota
+		Route::delete('/remover/{id}',[clubController::class, 'remover']);
+
+	no controller
+		public function remover($id){
+        		clubes::findOrFail($id)->delete();
+
+		        return redirect('/');
+    		}
+
+editar dados do banco
+	1º passo
+		criar uma rota que pegue por parametro o id do campo que deseje editar
+	2º passo
+		criar uma rota para atualizar os campos do id
+
+
+	no controller
+
+		  public function mostrar($id){
+		        $editar = clubes::findOrFail($id);
+
+		        return view('form_editar', ['valor_edit'=>$editar]);
+    		}
+
+		public function editar(Request $parametros){
+        
+        	// atribuindo os parametros recebidos à variável clube
+        	$clube = $parametros->all();
+
+
+        	if($parametros->hasFile('escudo') && $parametros->file('escudo')->isValid()){
+                	$requestImage = $parametros->escudo;
+
+                	// atribuir a variavel a extensão do arquivo
+                	$extension = $requestImage->extension();
+
+                	// cria uma hash e concatena com o tempo atual
+                	$imageName = md5($requestImage->getClientOriginalName().strtotime("now") . "." . $extension);
+
+                	// mover o arquivo/imagem para o diretório
+                	$parametros->escudo->move(public_path('img/escudos'), $imageName);
+
+                	// salvar a url do arquivo/imagem no banco
+                	$clube['clube_escudo'] = $imageName;
+        	}    
+    
+        	clubes::findOrFail($parametros ->id)->update($clube);
+        	return redirect("/")->with('mensagem', 'clube atualizado');
+    		}
+	
+	na rota
+
+		Route::get('/editar/{id}',[clubController::class, 'mostrar']);
+		Route::put('/update/{id}',[clubController::class, 'editar']);
+
+
+
+	 // necessário para realizar o comando de PUT no arquivo do Model
+	    protected $guarded = [];
+
+
+
