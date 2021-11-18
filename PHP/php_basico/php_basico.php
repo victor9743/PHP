@@ -129,43 +129,20 @@
     ?>
 
     <?php
-
-        /*function aleatorio(){
-            $ale = rand(1,5);
-
-            return $ale;
-        }
-    
-        $cesta = array();
-        for($x=0; $x<=5; $x++){
-
-            while(in_array(aleatorio(), $cesta)){
-                aleatorio();
-            }
-            array_push($cesta, aleatorio());
-            /*
-            if(!in_array($ale, $cesta)){
-                array_push($cesta, $ale);
-            }else{
-                array_push($cesta, "false");
-            }
-        
-
-        }
-          */
-
         $numeros = array();
-        $numeros_sorteados = array();
 
-        //armazenar os numeros
-        for($x=0; $x<=4; $x++){
-            array_push($numeros, $x);
-        }
+        $x=5;
+        while($x>=count($numeros)){
+            $ale = rand(1,6);
             
+            if(!in_array($ale, $numeros)){
+                array_push($numeros, $ale);
+              
+            }
+            
+        }
         
-   
-
-        // print_r($cesta);
+         print_r($numeros);
        
     ?>
             
