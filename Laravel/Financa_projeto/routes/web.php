@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\clubController;
+
+use App\Http\Controllers\financas;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +15,6 @@ use App\Http\Controllers\clubController;
 |
 */
 
-Route::get('/', [clubController::class, 'index' ]);
-Route::post('/', [clubController::class, 'salvarDados']);
-Route::get('/editar/{id}',[clubController::class, 'mostrar']);
-Route::put('/update/{id}',[clubController::class, 'editar']);
-Route::delete('/remover/{id}',[clubController::class, 'remover']);
+Route::get('/', [financas::class, 'index']);
+Route::get('/cadastrar',[financas::class, 'cadastrar']);
+Route::post('/salvar', [financas::class, 'store']);

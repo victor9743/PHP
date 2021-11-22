@@ -26,7 +26,7 @@ class clubController extends Controller
         $modelConnection->clube_nome = $campos->nome; 
         $modelConnection->clube_cidade = $campos->cidade;
         $modelConnection->clube_estado = $campos->estado;
-        // $modelConnection->clube_escudo = $campos->escudo;
+        $modelConnection->clube_escudo = $campos->escudo;
 
         if($campos->hasFile('escudo') && $campos->file('escudo')->isValid())
                 $requestImage = $campos->escudo;
@@ -59,7 +59,7 @@ class clubController extends Controller
         $clube = $parametros->all();
 
 
-        /*if($parametros->hasFile('escudo') && $parametros->file('escudo')->isValid())
+        if($parametros->hasFile('escudo') && $parametros->file('escudo')->isValid()){
                 $requestImage = $parametros->escudo;
 
                 // atribuir a variavel a extensão do arquivo
@@ -72,9 +72,16 @@ class clubController extends Controller
                 $parametros->escudo->move(public_path('img/escudos'), $imageName);
 
                 // salvar a url do arquivo/imagem no banco
-                $clube['clube_escudo'] = $imageName;*/
+                $clube['clube_escudo'] = $imageName;
+        }    
     
         clubes::findOrFail($parametros ->id)->update($clube);
         return redirect("/")->with('mensagem', 'clube atualizado');
+    }
+
+    public function remover($id){
+        clubes::findOrFail($id)->delete();
+
+        return redirect('/');
     }
 }
