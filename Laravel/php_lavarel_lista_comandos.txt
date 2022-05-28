@@ -32,6 +32,40 @@ if/else
 	@if(lógica)
 	
 	@else
+	
+bootstrap laravel
+4
+
+use estes passos
+
+npm install bootstrap
+npm install @popperjs/core
+npm install sass@^1.32
+npm install sass-loader
+Para arquivos Bootstrap Sass, vamos criar a pasta “scss” em /resources e então um novo arquivo app.scss em /resources/scss/. Em seguida, insira a seguinte linha no arquivo /ressources/scss/app.scss
+
+@import "bootstrap";
+Para Bootstrap JavaScript, insira a seguinte linha no arquivo /resources/js/app.js :
+
+import "bootstrap";
+Para compilar arquivos Bootstrap JavaScript e Sass com Laravel Mix, você precisa editar o arquivo /webpack.mix.js da seguinte forma:
+
+const mix = require('laravel-mix');
+
+mix.js('resources/js/app.js', 'public/js')
+    .sass("resources/scss/app.scss", "public/css");
+agora você pode executar seu comando
+
+npm run dev
+Agora que temos os arquivos /public/css/app.css e /public/js/app.js com o Bootstrap incluído, podemos incluí-los em uma página (template Blade) através do asset helper do Laravel () para usar os componentes do Bootstrap
+
+Na sua cabeça
+
+<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+No seu rodapé
+
+<script src="{{ asset('js/app.js') }}"></script>
+agora acho que ele vai trabalhar aproveite
 
 	@endif
 
